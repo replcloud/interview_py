@@ -14,7 +14,7 @@ class Solution:
                     return False
             words = words[1:]
         return True if len(words) == 0 else False
-    
+
 if __name__ == '__main__':
     p = "abba"
     # s = "dog cat cat dog"
