@@ -34,3 +34,18 @@ class Solution:
             if count[i] == N - 1:
                 return i
         return -1
+
+    def findJudge_26pt(self, N: int, trust: List[List[int]]) -> int:
+        if N == 1 and len(trust) == 0: return 1
+
+        ruleout = defaultdict(bool)
+        trustcount = defaultdict(set)
+
+        for t in trust:
+            ruleout[t[0]] = True
+            trustcount[t[1]].add(t[0])
+
+        for k, v in trustcount.items():
+            if len(v) == N - 1 and ruleout[k] is False:
+                return k
+        return -1
