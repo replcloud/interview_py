@@ -46,6 +46,8 @@ class Solution:
         targets = defaultdict(list)
         for a, b in sorted(tickets)[::-1]:
             targets[a] += b,
+            print(b,)
+            print(b)
         route, stack = [], ['JFK']
         while stack:
             while targets[stack[-1]]:
