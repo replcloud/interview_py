@@ -1,7 +1,6 @@
-#!/bin/python3
+#https://discuss.codechef.com/t/a-tutorial-on-fast-modulo-multiplication-exponential-squaring/2899
 import math
 from collections import Counter
-import timeit
 
 #
 # Complete the 'initialize' function below.
@@ -29,33 +28,46 @@ def initialize(s):
 #  2. INTEGER r
 #
 
-def gen_fs(n):
+def gen_factorial_cache(f):
     global factorial_l
-    i = len(factorial_l)
-    while i < n:
-        print(factorial_l)
-        factorial_l += factorial_l[-1] * (i + 1),
-        i += 1
-
+    l = len(factorial_l)
+    if l < f + 1:
+        factorial_l += [-1] * (f + 1 - l)
+        factorial_l[f] = math.factorial(f)
+    if factorial_l[f] == -1:
+        factorial_l[f] = math.factorial(f)
+    return factorial_l[f]
 
 def answerQuery(l, r):
-    # Return the answer for this query modulo 1000000007.
-    # gen_fs(5)
-    # print(lst_fac)
+    M = 10**9+7
     sumSame = 1
     odd_count = 0
     even_count = 0
     counter = Counter(gs[l - 1:r])
     for _, c in counter.items():
-        sumSame *= math.factorial(c // 2)
+        sumSame *= gen_factorial_cache(c // 2)
         even_count += c // 2
         if c % 2 == 1:
             odd_count += 1
     res = math.factorial(even_count) // sumSame
-    res = res if odd_count == 0 else res * odd_count
-    return res
+    print(res)
+    i = 0
+    while res > 0:
+        res >>= 2
+        i += 1
+    print(i)
+    if odd_count > 0:
+        if odd_count > M: odd_count = odd_count % M
+        res = res * odd_count
+        # res = gen_factorial_cache(even_count) // sumSame * odd_count
+    else:
+        # res = gen_factorial_cache(even_count) // sumSame
+        pass
+    return res % M
 
 if __name__ == '__main__':
+    # s = 'week'
+    # print(answerQuery(2,3))
     with open('/Users/c/Downloads/input22.txt') as f:
         # s = 'wldsfubcsxrryqpqyqqxrlffumtuwymbybnpemdiwyqz'
         s = f.readline()
@@ -72,3 +84,9 @@ if __name__ == '__main__':
         print(answerQuery(queries[0][0], queries[0][1]))
         e = datetime.now()
         print(e-s)
+
+
+        s = datetime.now()
+        print(answerQuery(queries[0][0], queries[0][1]))
+        e = datetime.now()
+        print(e - s)
